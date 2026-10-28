@@ -17,7 +17,7 @@ Native Rust CLI for audio identification, inspection and atomic tag/artwork edit
 - `just check`: formatting, Clippy, tests and coverage.
 - `just build`: release executable at `bin/tag-track`.
 
-Use Rust 1.88+, Just, FFmpeg/FFprobe 4.4+, cargo-llvm-cov and llvm-tools. The native descriptor/signal paths target Unix; Linux is the tested platform. Path dependencies are independent sibling repositories, not a Cargo workspace. Never use `cargo fmt --all`, which formats those siblings too.
+Use Rust 1.88+, Just, FFmpeg/FFprobe 4.4+, cargo-llvm-cov and llvm-tools. The native descriptor/signal paths target Unix; Linux is the tested platform. External dependencies are revision-pinned GitHub repositories. Scope formatting to this package.
 
 ## Contracts
 
