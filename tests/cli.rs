@@ -60,9 +60,25 @@ fn native_help_version_skill_and_validation() {
             .try_get_matches_from(["tag-track", "skill"])
             .unwrap();
         let mut bytes = Vec::new();
-        assert!(cli_command_kit::write_skill(&matches, &options, &mut bytes).unwrap());
-        assert_eq!(bytes, cli::SKILL.as_bytes());
-        assert!(cli_command_kit::write_skill(&matches, &options, &mut Broken).is_err());
+        assert!(
+            cli_command_kit::write_skill(
+                &cli::command(mode).unwrap(),
+                &matches,
+                &options,
+                &mut bytes
+            )
+            .unwrap()
+        );
+        assert_eq!(bytes, INSTALL_TEXT.as_bytes());
+        assert!(
+            cli_command_kit::write_skill(
+                &cli::command(mode).unwrap(),
+                &matches,
+                &options,
+                &mut Broken
+            )
+            .is_err()
+        );
     }
     for args in [
         vec!["skill", "extra"],
@@ -121,7 +137,7 @@ fn native_help_version_skill_and_validation() {
     assert!(empty.stdout.starts_with(b"ALERT:"));
     let skill = binary().args(["skill"]).output().unwrap();
     assert!(skill.status.success());
-    assert_eq!(skill.stdout, cli::SKILL.as_bytes());
+    assert_eq!(skill.stdout, INSTALL_TEXT.as_bytes());
     let help = binary()
         .env("AGENT", "1")
         .args(["help", "track", "inspect"])
@@ -496,7 +512,7 @@ fn usage_guide_covers_live_commands_and_skill_location() {
     );
     assert!(missing.is_empty(), "{}", missing.join("\n"));
     assert!(include_str!("../skills/tag-track/SKILL.md").contains("name: tag-track\n"));
-    assert!(cli::SKILL.contains("/skills/tag-track\n"));
+    assert!(INSTALL_TEXT.contains("/skills/tag-track\n"));
 }
 
 #[test]
@@ -551,3 +567,5 @@ async fn explicit_current_release_channel_runs_native_self_updater_offline() {
     assert_eq!(output.stdout, b"update: current\nversion: 0.1.0\n");
     server.abort();
 }
+
+const INSTALL_TEXT: &str = "Install the tag-track skill using the Skills CLI:\n\n  npx skills add alexgorbatchev/tag-track-cli --skill tag-track\n\nSkill:\n\n  https://github.com/alexgorbatchev/tag-track-cli/tree/main/skills/tag-track\n";

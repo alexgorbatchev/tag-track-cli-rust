@@ -10,7 +10,7 @@ use audio_metadata::{
 use clap::ArgMatches;
 use cli_command_kit::Mode;
 use cli_event_stream::{Reporter, Target};
-pub use commands::{SKILL, command, help_options};
+pub use commands::{command, help_options};
 pub use dependencies::{dependencies, dependency_manager, ensure, release_channel};
 pub use output::{print_inspection, print_outcome};
 use std::{
@@ -54,7 +54,7 @@ pub async fn execute(matches: &ArgMatches, mode: Mode, token: &CancellationToken
         writeln!(stdout, "{}", env!("CARGO_PKG_VERSION"))?;
         return Ok(());
     }
-    if cli_command_kit::write_skill(matches, &help_options(), &mut stdout)? {
+    if cli_command_kit::write_skill(&command(mode)?, matches, &help_options(), &mut stdout)? {
         return Ok(());
     }
     if matches.subcommand_name() == Some("self") {

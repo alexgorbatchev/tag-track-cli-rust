@@ -3,10 +3,12 @@ use clap::{Arg, ArgAction, Command};
 use cli_command_kit::{HelpOptions, Mode};
 use cli_event_stream::Target;
 use std::path::PathBuf;
-pub const SKILL: &str = "Install the tag-track skill using the Skills CLI:\n\n  npx skills add alexgorbatchev/tag-track-cli --skill tag-track\n\nSkill:\n\n  https://github.com/alexgorbatchev/tag-track-cli/tree/main/skills/tag-track\n";
 pub fn help_options() -> HelpOptions {
     HelpOptions {
-        skill: Some(SKILL.into()),
+        skill: Some(
+            cli_command_kit::SkillSource::new("alexgorbatchev/tag-track-cli", "main")
+                .expect("the fixed skill source names a GitHub repository"),
+        ),
         ..Default::default()
     }
 }
